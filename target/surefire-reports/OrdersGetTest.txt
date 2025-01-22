@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: OrdersGetTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 60.167 s <<< FAILURE! - in OrdersGetTest
+listOfOrdersCanBeReceived(OrdersGetTest)  Time elapsed: 60.163 s  <<< ERROR!
+java.lang.IllegalStateException: 
+Cannot parse content to class body.OrdersModel because no content-type was present in the response and no default parser has been set.
+You can specify a default parser using e.g.:
+RestAssured.defaultParser = Parser.JSON;
+
+or you can specify an explicit ObjectMapper using as(class body.OrdersModel, <ObjectMapper>);
+	at OrdersGetTest.listOfOrdersCanBeReceived(OrdersGetTest.java:15)
+
