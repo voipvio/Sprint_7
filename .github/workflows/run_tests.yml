@@ -1,8 +1,17 @@
 name: run_tests
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default:
+        type: choice
+        options:
+          - smoke_UI
+          - regression_UI
+
 
 jobs:
   UISmoke:
@@ -19,5 +28,15 @@ jobs:
           java-version: 22
           cache: maven
 
-      - name: Run UI Smoke
+      - name: Install Chrome
+        run: sudo apt-get install google-chrome-stable
+
+      - name: smoke_UI
+        if: "github.event.inputs.deployment_target == 'smoke_UI'"
         run: mvn clean test
+
+      - name: regression
+        if: "github.event.inputs.deployment_target == 'regression_UI'"
+        run: mvn clean test
+
+
