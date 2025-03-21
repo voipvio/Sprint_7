@@ -1,0 +1,40 @@
+name: run_tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default:
+        type: choice
+        options:
+          - smoke_UI
+          - regression_UI
+
+jobs:
+  UISmoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 22
+          cache: maven
+
+      - name: Install Chrome
+        run: sudo apt-get install google-chrome-stable
+
+      - name: smoke_UI
+        if: "github.event.inputs.deployment_target == 'smoke_UI'"
+        run: mvn clean test
+
+      - name: regression
+        if: "github.event.inputs.deployment_target == 'regression_UI'"
+        run: mvn clean test
+
