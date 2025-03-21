@@ -13,7 +13,7 @@ on:
           - regression_UI
 
 jobs:
-  UISmoke:
+  UI_tests:
     runs-on: ubuntu-latest
 
     steps:
