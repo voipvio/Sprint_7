@@ -38,3 +38,4 @@ jobs:
         if: "github.event.inputs.deployment_target == 'regression_UI'"
         run: mvn clean test
 
+
