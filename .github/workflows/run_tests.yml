@@ -21,4 +21,3 @@ jobs:
 
       - name: Run UI Smoke
         run: mvn clean test
-
