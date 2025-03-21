@@ -32,10 +32,10 @@ jobs:
 
       - name: smoke_UI
         if: "github.event.inputs.deployment_target == 'smoke_UI'"
-        run: mvn clean test
+        run: mvn clean -Dtest=CourierCreateTest.java test
 
-      - name: regression
+      - name: regression_UI
         if: "github.event.inputs.deployment_target == 'regression_UI'"
-        run: mvn clean test
+        run: mvn clean -Dtest=CourierLoginTest.java test
 
 
