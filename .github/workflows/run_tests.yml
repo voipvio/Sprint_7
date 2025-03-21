@@ -14,7 +14,7 @@ on:
 
 
 jobs:
-  UISmoke:
+  UI_tests:
     runs-on: ubuntu-latest
 
     steps:
