@@ -40,35 +40,49 @@ jobs:
         run: mvn clean -Dtest=CourierLoginTest.java test
 
       - name: Store allure results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: allure-results
           path:
             allure-results
           retention-days: 1
 
-      - name: Load test report history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
+  generate-report:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Generate report
+    steps:
+      - name: Setup JDK
+        uses: actions/setup-java@v4
         with:
-          ref: develop
-          path: develop
+          distribution: 'temurin'
+          java-version: 22
+      - run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.23.1/allure-2.23.1.tgz && sudo tar -zxvf allure-2.23.1.tgz -C /opt/ && sudo ln -s /opt/allure-2.23.1/bin/allure /usr/bin/allure
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
+      - name: Download all workflow tun artifacts
+        uses: actions/download-artifacts@v3
+      - run: mvn allure generate -c allure-results -o _site
+      - name: Store generated report
+        uses: actions/upload-artifact@v3
         with:
-          gh_pages: develop
-          allure_history: allure-history
-          allure_results: build/allure-results
+          name: _site
+          path:
+            _site
+          retention-days: 1
 
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: develop
-          publish_dir: allure-history
+
+  publish-report:
+      runs-on: ubuntu-latest
+      needs: generate-report
+      name: Report publication
+      steps:
+        - name: Download all workflow tun artifacts
+          uses: actions/download-artifacts@v3
+        - name: Upload Pages artifact
+          uses: actions/upload-pages-artifact@v2
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v1.2.9
+
 
 
