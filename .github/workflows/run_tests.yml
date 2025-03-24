@@ -42,9 +42,9 @@ jobs:
       - name: Store allure results
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results
+          name: target/allure-results
           path:
-            allure-results
+            target/allure-results
           retention-days: 1
 
   generate-report:
@@ -61,7 +61,7 @@ jobs:
 
       - name: Download all workflow tun artifacts
         uses: actions/download-artifact@v4
-      - run: mvn allure generate -c allure-results -o _site
+      - run: mvn allure generate -c target/allure-results -o _site
       - name: Store generated report
         uses: actions/upload-artifact@v4
         with:
