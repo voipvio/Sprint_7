@@ -32,11 +32,11 @@ jobs:
 
       - name: smoke_UI
         if: "github.event.inputs.deployment_target == 'smoke_UI'"
-        run: mvn clean -Dtest=CourierCreateTest.java test
+        run: mvn clean -Dtest=CourierCreateTest test
 
       - name: regression_UI
         if: "github.event.inputs.deployment_target == 'regression_UI'"
-        run: mvn clean -Dtest=CourierLoginTest.java test
+        run: mvn clean -Dtest=CourierLoginTest test
 
       - name: Store allure results
         uses: actions/upload-artifact@v4
